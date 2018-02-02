@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    public int progress = 60;
     public int direction;
     public Waypoint to;
     public Waypoint from;
@@ -13,54 +14,49 @@ public class Player : MonoBehaviour {
         direction = 0;
         to = GameObject.FindGameObjectWithTag("Goal").GetComponent<Waypoint>();
         from = GameObject.FindGameObjectWithTag("Start").GetComponent<Waypoint>();
-        ChangeVelocity(to, from);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = transform.position + vel * Time.fixedDeltaTime;
-        if (Mathf.Abs(transform.position.magnitude - to.transform.position.magnitude) <= 1)
+        transform.position += (to.transform.position - transform.position) / progress;
+        progress = progress - 1;
+        if (progress == 0)
         {
             ChooseDirection(to, direction);
+            progress = 60;
         }
 	}
-
-    void ChangeVelocity(Waypoint current, Waypoint goal)
-    {
-        vel = -(goal.transform.position - current.transform.position) / 5f;
-    }
     
-    void ChooseDirection(Waypoint current, int direction)
+    void ChooseDirection(Waypoint current, int dir)
     {
-        if (current.neighbors[Right(direction)] != null)
+        if (current.neighbors[Right(dir)] != null)
         {
-            to = current.neighbors[Right(direction)];
+            to = current.neighbors[Right(dir)];
             from = current;
-            ChangeVelocity(to, from);
+            direction = Right(dir);
             // implement velocity update
         }
 
-        else if (current.neighbors[Left(direction)] != null)
+        else if (current.neighbors[dir] != null)
         {
-            to = current.neighbors[Left(direction)];
+            to = current.neighbors[dir];
             from = current;
-            ChangeVelocity(to, from);
             // implement velocity update
         }
 
-        else if (current.neighbors[direction] != null)
+        else if (current.neighbors[Left(dir)] != null)
         {
-            to = current.neighbors[direction];
+            to = current.neighbors[Left(dir)];
             from = current;
-            ChangeVelocity(to, from);
+            direction = Left(dir);
             // implement velocity update
         }
 
-        else if (current.neighbors[Behind(direction)] != null)
+        else if (current.neighbors[Behind(dir)] != null)
         {
-            to = current.neighbors[Behind(direction)];
+            to = current.neighbors[Behind(dir)];
             from = current;
-            ChangeVelocity(to, from);
+            direction = Behind(dir);
             // implement velocity update
         }
     }
@@ -73,7 +69,7 @@ public class Player : MonoBehaviour {
 
     public static int Left(int direction)
     {
-        return ((direction - 1) % 4);
+        return ((direction + 3) % 4);
     }
 
     public static int Behind(int direction)

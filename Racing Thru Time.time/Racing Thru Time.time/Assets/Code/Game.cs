@@ -17,17 +17,19 @@ public class Game : MonoBehaviour {
                 Debug.Log(w.transform.parent.position);
                 if (w != other_w) {
                     float dist = Vector3.Distance(w.transform.parent.position, other_w.transform.parent.position);
-                    if (dist < 2*radius)
+                    Debug.Log(radius);
+                    if (dist < 1.22f)
                     {
+                        Debug.Log("we're in the loop");
                         if (w.transform.parent.position.x == other_w.transform.parent.position.x) {
                             if (w.transform.parent.position.y > other_w.transform.parent.position.y) {
-                                w.neighbors[0] = other_w;
-                                other_w.neighbors[2] = w;
+                                w.neighbors[2] = other_w;
+                                other_w.neighbors[0] = w;
                             }
                             else
                             {
-                                w.neighbors[2] = other_w;
-                                other_w.neighbors[0] = w;
+                                w.neighbors[0] = other_w;
+                                other_w.neighbors[2] = w;
                             }
                         }
 
