@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Waypoint : MonoBehaviour {
-    public Waypoint north = null;
-    public Waypoint south = null;
-    public Waypoint east = null;
-    public Waypoint west = null; 
+    /*
+        neighbors[0] = north;
+        neighbors[1] = east;
+        neighbors[2] = south;
+        neighbors[3] = west; 
+    */
+
+    public Waypoint[] neighbors = new Waypoint[4];
+    public int radius = 1;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+    }
 }
