@@ -21,7 +21,6 @@ public class RotateTile : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         target = transform.eulerAngles.z;
-        var x = 4;
         g = FindObjectOfType<Game>();
         characters = FindObjectsOfType<Character>();
         children = GetComponentsInChildren<Waypoint>();
@@ -45,6 +44,8 @@ public class RotateTile : MonoBehaviour {
     {
         Game.AdjustInput(category, Game.tiles);
     }
+
+    
    
 
     void RotationUpdate()
@@ -132,7 +133,7 @@ public class RotateTile : MonoBehaviour {
 
                     if (p.waiting)
                     {
-                        p.ChooseDirection(p.to, p.direction);
+                        p.ChooseDirection(p.to, p.direction, p.type);
                         p.progress = p.MaxProgress;
                         p.waiting = false;
                     }
@@ -160,7 +161,7 @@ public class RotateTile : MonoBehaviour {
 
                     if (p.waiting)
                     {
-                        p.ChooseDirection(p.to, p.direction);
+                        p.ChooseDirection(p.to, p.direction, p.type);
                         p.progress = p.MaxProgress;
                         p.waiting = false;
                     }

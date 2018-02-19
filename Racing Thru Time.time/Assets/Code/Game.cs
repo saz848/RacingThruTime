@@ -43,7 +43,6 @@ public class Game : MonoBehaviour {
 	        if (c != player)
 	        {
 	            float distance = Vector3.Distance(player.transform.position, c.transform.position);
-	            Debug.Log(player.radius + c.radius);
                 if (distance < (player.radius + c.radius))
 	            {
 	                EndGame(DEFEAT);
@@ -140,7 +139,7 @@ public class Game : MonoBehaviour {
         int numScenes = SceneManager.sceneCountInBuildSettings;
         if (result == VICTORY)
         {
-            if (SceneManager.GetActiveScene().buildIndex < numScenes)
+            if (SceneManager.GetActiveScene().buildIndex < numScenes - 1)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }

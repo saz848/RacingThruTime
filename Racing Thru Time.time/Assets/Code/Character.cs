@@ -46,7 +46,7 @@ using UnityEngine.SceneManagement;
 
             if (starting)
             {
-                ChooseDirection(from, direction);
+                ChooseDirection(from, direction, type);
                 starting = false; 
             }
 
@@ -54,6 +54,10 @@ using UnityEngine.SceneManagement;
             {
                 if (waiting == false)
                 {
+                    if(float.IsNegativeInfinity(to.transform.position.x) ||  float.IsPositiveInfinity(to.transform.position.x) || float.IsNaN(to.transform.position.x))
+                    {
+                        to = FindClosestWaypoint(transform.position);
+                    }
                     transform.position += (to.transform.position - transform.position) / progress;
                     progress = progress - 1;
                 }
@@ -62,7 +66,7 @@ using UnityEngine.SceneManagement;
                 {
                     if (!rotating)
                     {
-                        ChooseDirection(to, direction);
+                        ChooseDirection(to, direction, type);
                         progress = MaxProgress;
                     }
                     else
@@ -97,9 +101,53 @@ using UnityEngine.SceneManagement;
         }
 
 
-        public void ChooseDirection(Waypoint current, int dir)
+        public void ChooseDirection(Waypoint current, int dir, int type)
         {
-            if (current.neighbors[Right(dir)] != null)
+            if (type == 0 || type == 1)
+            {
+                if (current.neighbors[Right(dir)] != null)
+                {
+                    to = current.neighbors[Right(dir)];
+                    from = current;
+                    direction = Right(dir);
+
+                    // implement velocity update
+                }
+
+                else if (current.neighbors[dir] != null)
+                {
+                    to = current.neighbors[dir];
+                    from = current;
+                    // implement velocity update
+                }
+
+                else if (current.neighbors[Left(dir)] != null)
+                {
+                    to = current.neighbors[Left(dir)];
+                    from = current;
+                    direction = Left(dir);
+
+                    // implement velocity update
+                }
+
+                else if (current.neighbors[Behind(dir)] != null)
+                {
+                    to = current.neighbors[Behind(dir)];
+                    from = current;
+                    direction = Behind(dir);
+
+                    // implement velocity update
+                }
+            }
+            else if(type == 2)
+            {
+                if (current.neighbors[dir] != null)
+                {
+                    to = current.neighbors[dir];
+                    from = current;
+                    // implement velocity update
+                }
+            else if (current.neighbors[Right(dir)] != null)
             {
                 to = current.neighbors[Right(dir)];
                 from = current;
@@ -107,14 +155,6 @@ using UnityEngine.SceneManagement;
 
                 // implement velocity update
             }
-
-            else if (current.neighbors[dir] != null)
-            {
-                to = current.neighbors[dir];
-                from = current;
-                // implement velocity update
-            }
-
             else if (current.neighbors[Left(dir)] != null)
             {
                 to = current.neighbors[Left(dir)];
@@ -123,7 +163,6 @@ using UnityEngine.SceneManagement;
 
                 // implement velocity update
             }
-
             else if (current.neighbors[Behind(dir)] != null)
             {
                 to = current.neighbors[Behind(dir)];
@@ -132,6 +171,8 @@ using UnityEngine.SceneManagement;
 
                 // implement velocity update
             }
+        }
+        
         }
 
         // direction helper functions
