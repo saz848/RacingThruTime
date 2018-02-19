@@ -10,21 +10,17 @@ public class Game : MonoBehaviour {
     public const int DEFEAT = 5;
     Character[] game_chars;
     Character player;
-    public RotateTile[] tiles;
-    public static Color[] default_colors = new Color[3];
-    public static Color[] highlighted_colors = new Color[3];
+    public static RotateTile[] tiles;
+    public static Color default_color = new Color();
+    public static Color highlighted_color = new Color();
     // Use this for initialization
     void Start ()
     {
-        highlighted_colors[0] = new Color((173f/255f), (51f/255f), 1);
-        default_colors[0] = new Color((214f/255f), (153f/255f), 1);
-        highlighted_colors[1] = new Color((173f / 255f), (51f / 255f), 1);
-        default_colors[1] = new Color((214f / 255f), (153f / 255f), 1);
-        highlighted_colors[2] = new Color((173f / 255f), (51f / 255f), 1);
-        default_colors[2] = new Color((214f / 255f), (153f / 255f), 1);
+        highlighted_color = new Color((173f/255f), (51f/255f), 1);
+        default_color = new Color((214f/255f), (153f/255f), 1);
         allWaypoints = FindObjectsOfType<Waypoint>();
         tiles = FindObjectsOfType<RotateTile>();
-        AdjustInput(1);
+        AdjustInput(0, tiles);
         foreach (Waypoint w in allWaypoints) {
             SetNeighbors(w);
         }
@@ -57,23 +53,40 @@ public class Game : MonoBehaviour {
 
 	    if (Input.GetKeyDown(KeyCode.Q))
 	    {
-	        AdjustInput(0);
+	        AdjustInput(0, tiles);
 	    }
-
+        
 	    else if (Input.GetKeyDown(KeyCode.W))
 	    {
-	        AdjustInput(1);
+	        AdjustInput(1, tiles);
 	    }
 
         else if (Input.GetKeyDown(KeyCode.E))
 	    {
-	        AdjustInput(2);
+	        AdjustInput(2, tiles);
 	    }
 
 	    else if (Input.GetKeyDown(KeyCode.R))
 	    {
-	        AdjustInput(3);
+	        AdjustInput(3, tiles);
 	    }
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            AdjustInput(4, tiles);
+        }
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
+            AdjustInput(5, tiles);
+        }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            AdjustInput(6, tiles);
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            AdjustInput(7, tiles);
+        }
+        
     }
 
     public void SetNeighbors(Waypoint w)
@@ -124,30 +137,39 @@ public class Game : MonoBehaviour {
 
     public static void EndGame(int result)
     {
+        int numScenes = SceneManager.sceneCountInBuildSettings;
         if (result == VICTORY)
         {
-            SceneManager.LoadScene("Menu");
+            if (SceneManager.GetActiveScene().buildIndex < numScenes)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+            else
+            {
+                SceneManager.LoadScene("Menu");
+            }
+            
         }
         else
         {
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
-    public void AdjustInput(int cat)
+    public static void AdjustInput(int cat, RotateTile[] tile_list)
     {
-        foreach (RotateTile r in tiles)
+        foreach (RotateTile r in tile_list)
         {
             SpriteRenderer tile_color = r.GetComponent<SpriteRenderer>();
             if (r.category == cat)
             {
                 r.rotatable = true; 
-                tile_color.color = highlighted_colors[r.category];
+                tile_color.color = highlighted_color;
             }
             else
             {
                 r.rotatable = false; 
-                tile_color.color = default_colors[r.category];
+                tile_color.color = default_color;
             }
         }
     }

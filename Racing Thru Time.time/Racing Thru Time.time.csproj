@@ -87,6 +87,7 @@
     <Compile Include="Assets\Code\Character.cs" />
     <Compile Include="Assets\Code\Game.cs" />
     <Compile Include="Assets\Code\Goal.cs" />
+    <Compile Include="Assets\Code\LevelButtons.cs" />
     <Compile Include="Assets\Code\MainMenu.cs" />
     <Compile Include="Assets\Code\RotateTile.cs" />
     <Compile Include="Assets\Code\Waypoint.cs" />

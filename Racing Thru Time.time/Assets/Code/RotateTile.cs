@@ -20,6 +20,8 @@ public class RotateTile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        target = transform.eulerAngles.z;
+        var x = 4;
         g = FindObjectOfType<Game>();
         characters = FindObjectsOfType<Character>();
         children = GetComponentsInChildren<Waypoint>();
@@ -35,29 +37,13 @@ public class RotateTile : MonoBehaviour {
 	void Update ()
 	{
 	    RotationUpdate();
-
+        
 	}
 
   
     void OnMouseDown()
     {
-        foreach (RotateTile tile in AllTiles)
-        {
-            tile.rotatable = false;
-        }
-        this.rotatable = true;
-        foreach (RotateTile r in AllTiles)
-        {
-            SpriteRenderer tile_color = r.GetComponent<SpriteRenderer>();
-            if (r == this)
-            {
-                tile_color.color = Game.highlighted_colors[r.category];
-            }
-            else
-            {
-                tile_color.color = Game.default_colors[r.category];
-            }
-        }
+        Game.AdjustInput(category, Game.tiles);
     }
    
 
