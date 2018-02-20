@@ -52,7 +52,7 @@ public class RotateTile : MonoBehaviour {
     {
         if (rotatable)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.X))
             {
                 if (queue < 1)
                 {
@@ -61,7 +61,7 @@ public class RotateTile : MonoBehaviour {
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Z))
             {
                 if (queue > -1)
                 {
