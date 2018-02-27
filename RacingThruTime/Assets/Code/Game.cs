@@ -146,7 +146,7 @@ public class Game : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             EndGame(DEFEAT);
         }

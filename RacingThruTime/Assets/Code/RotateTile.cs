@@ -84,11 +84,13 @@ public class RotateTile : MonoBehaviour {
                     if (w != null && OnRotatingTile(w))
                     {
                         c.rotating = true;
+                        //c.initRotation = c.transform.rotation;
                     }
                 }
                 if (OnRotatingTile(c.to) && (c.progress < c.MaxProgress / 2))
                 {
                     c.rotating = true;
+                    //c.initRotation = c.transform.rotation;
                 }
 
             }
@@ -178,7 +180,7 @@ public class RotateTile : MonoBehaviour {
 
     }
 
-
+    /*
     void LateUpdate()
     {
         foreach (Character c in characters)
@@ -187,7 +189,8 @@ public class RotateTile : MonoBehaviour {
         }
         
     }
-
+    */
+    
     void RemoveNeighbors(Waypoint w)
     {
         for(int i = 0; i < 4; i++)
@@ -243,6 +246,7 @@ public class RotateTile : MonoBehaviour {
                 p.to = p.from;
                 p.progress = p.MaxProgress - p.progress;
                 p.direction = Character.Behind(p.direction);
+                p.transform.Rotate(Vector3.back * 180);
                 p.stopped = false;
             }
             else
