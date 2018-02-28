@@ -12,7 +12,7 @@ public class RotateTile : MonoBehaviour {
     public bool rotatable = false; 
     float rotationSpeed = 15f;//was 15f
     Game g;
-    Character[] characters; 
+    public Character[] characters; 
     Waypoint[] children;
     public RotateTile[] AllTiles;
     public int queue;
@@ -101,8 +101,19 @@ public class RotateTile : MonoBehaviour {
                     RemoveNeighbors(child);
                 }
                 rotateCC = true;
-                target -= 90;
-                queue = queue - 1;
+                foreach (Character c in characters)
+                {
+                    if (c.type == 3 && c.rotating == true)
+                    {
+                        rotateCC = false; 
+                    }
+                }
+
+                if (rotateCC)
+                {
+                    target -= 90;
+                    queue = queue - 1;
+                }
             }
             else //rotate counterclockwise
             {
@@ -111,8 +122,18 @@ public class RotateTile : MonoBehaviour {
                     RemoveNeighbors(child);
                 }
                 rotateCCW = true;
-                target += 90;
-                queue = queue + 1;
+                foreach (Character c in characters)
+                {
+                    if (c.type == 3 && c.rotating == true)
+                    {
+                        rotateCCW = false;
+                    }
+                }
+                if (rotateCCW)
+                {
+                    target += 90;
+                    queue = queue + 1;
+                }
             }
             foreach (Character c in characters)
             {

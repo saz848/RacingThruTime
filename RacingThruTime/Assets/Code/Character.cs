@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     public int type;
     public const int PLAYER = 0;
     public const int SIMPLE_ENEMY = 1;
+    public const int HEAVY_ENEMY = 3; 
 
     public static Sprite player; 
     public static SpriteRenderer my_sprite;

@@ -9,7 +9,7 @@ public class Game : MonoBehaviour {
     public int control;
     public const int VICTORY = 1;
     public const int DEFEAT = 5;
-    Character[] game_chars;
+    public Character[] game_chars;
     Character player;
     public static RotateTile[] tiles;
     public static Color default_color = new Color();
@@ -98,6 +98,18 @@ public class Game : MonoBehaviour {
             control = (control + 1) % tiles.Length;
 	        AdjustInput(control, tiles);
 	    }
+
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            control = (control - 1 + tiles.Length) % tiles.Length;
+            AdjustInput(control, tiles);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            control = (control + 1) % tiles.Length;
+            AdjustInput(control, tiles);
+        }
 
         else if (Input.GetKeyDown(KeyCode.E))
 	    {
