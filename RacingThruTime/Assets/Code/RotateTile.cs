@@ -78,6 +78,18 @@ public class RotateTile : MonoBehaviour {
         {
             foreach (Character c in characters)
             {
+                if (c.type == 3)
+                {
+                    if (CharacterOnTile(c))
+                    {
+                        queue = 0; 
+                        return; 
+                    }
+                }
+            }
+
+            foreach (Character c in characters)
+            {
                 c.rotating = false;
                 foreach (Waypoint w in c.to.neighbors)
                 {
@@ -101,6 +113,7 @@ public class RotateTile : MonoBehaviour {
                     RemoveNeighbors(child);
                 }
                 rotateCC = true;
+                /*
                 foreach (Character c in characters)
                 {
                     if (c.type == 3 && c.rotating == true)
@@ -108,6 +121,7 @@ public class RotateTile : MonoBehaviour {
                         rotateCC = false; 
                     }
                 }
+                */
 
                 if (rotateCC)
                 {
@@ -122,6 +136,7 @@ public class RotateTile : MonoBehaviour {
                     RemoveNeighbors(child);
                 }
                 rotateCCW = true;
+                /*
                 foreach (Character c in characters)
                 {
                     if (c.type == 3 && c.rotating == true)
@@ -129,6 +144,7 @@ public class RotateTile : MonoBehaviour {
                         rotateCCW = false;
                     }
                 }
+                */
                 if (rotateCCW)
                 {
                     target += 90;
@@ -228,6 +244,29 @@ public class RotateTile : MonoBehaviour {
     public bool OnRotatingTile(Waypoint w)//wont work if multiple tiles rotate at once
     {
         return (w.transform.parent == transform);
+    }
+    
+    public bool CharacterOnTile(Character c)
+    {
+        if (OnRotatingTile(c.to) && OnRotatingTile(c.from))
+        {
+            return true; 
+        }
+        else if (OnRotatingTile(c.to))
+        {
+            if (c.progress < c.MaxProgress/2)
+            {
+                return true; 
+            }
+        }
+        else if (OnRotatingTile(c.from))
+        {
+            if (c.progress >= c.MaxProgress/2)
+            {
+                return true; 
+            }
+        }
+        return false; 
     }
 
 
