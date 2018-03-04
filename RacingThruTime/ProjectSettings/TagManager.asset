@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Start
   - Goal
+  - Level
+  - Quit
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - 
   - Tile
   - Player
-  - 
+  - Hidden
   - 
   - 
   - 
@@ -42,4 +44,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Menu
+    uniqueID: 1632229183
     locked: 0

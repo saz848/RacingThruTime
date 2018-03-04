@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
     public Waypoint[] allWaypoints;
@@ -31,9 +33,25 @@ public class Game : MonoBehaviour {
     public static Sprite t_outlined_n;
     public static Sprite t_n;
 
+    public GameObject pause_menu; 
+    public bool menu_visible;
+    public static bool change_selection = true; 
+    RotateTile selected;
+    public Canvas menu_canvas;
+    public Button levelButton;
+    public Button quitButton;
+
     // Use this for initialization
     void Start ()
     {
+        pause_menu = Object.Instantiate(Resources.Load("Pause Menu") as GameObject);
+        menu_canvas = pause_menu.GetComponent<Canvas>();
+        menu_canvas.worldCamera = Camera.main;
+        change_selection = true; 
+        menu_visible = false;
+
+        pause_menu.SetActive(menu_visible);
+
         highlighted_color = new Color((248f/255f), (149f/255f), (43f/255f));
         default_color = new Color((238f/255f), (180f/255f), (119f/255f));
         allWaypoints = FindObjectsOfType<Waypoint>();
@@ -87,55 +105,52 @@ public class Game : MonoBehaviour {
             }
 	    }
 
-	    if (Input.GetKeyDown(KeyCode.Q))
+	    if (Input.GetKeyDown("escape"))
 	    {
-            control = (control - 1 + tiles.Length) % tiles.Length;
-	        AdjustInput(control, tiles);
+	        foreach (RotateTile t in tiles)
+	        {
+	            if (!menu_visible)
+	            {
+	                if (t.rotatable)
+	                {
+	                    selected = t;
+	                }
+	            }
+	            t.rotatable = false;
+	            if (menu_visible)
+	            {
+	                selected.rotatable = true;
+	            }
+	        }
+            menu_visible = !menu_visible;
+	        change_selection = !menu_visible;
+            foreach (Character c in game_chars)
+	        {
+	            c.stopped = menu_visible; 
+	        }
+	        
+	        
+	        pause_menu.SetActive(menu_visible);
 	    }
+
+
+	    if (change_selection)
+	    {
+	        if (Input.GetKeyDown(KeyCode.UpArrow))
+	        {
+	            control = (control - 1 + tiles.Length) % tiles.Length;
+	            AdjustInput(control, tiles);
+	        }
+
+	        else if (Input.GetKeyDown(KeyCode.DownArrow))
+	        {
+	            control = (control + 1) % tiles.Length;
+	            AdjustInput(control, tiles);
+	        }
+        }
         
-	    else if (Input.GetKeyDown(KeyCode.W))
-	    {
-            control = (control + 1) % tiles.Length;
-	        AdjustInput(control, tiles);
-	    }
 
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            control = (control - 1 + tiles.Length) % tiles.Length;
-            AdjustInput(control, tiles);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            control = (control + 1) % tiles.Length;
-            AdjustInput(control, tiles);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.E))
-	    {
-	        AdjustInput(2, tiles);
-	    }
-
-	    else if (Input.GetKeyDown(KeyCode.R))
-	    {
-	        AdjustInput(3, tiles);
-	    }
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-            AdjustInput(4, tiles);
-        }
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
-            AdjustInput(5, tiles);
-        }
-        else if (Input.GetKeyDown(KeyCode.U))
-        {
-            AdjustInput(6, tiles);
-        }
-        else if (Input.GetKeyDown(KeyCode.I))
-        {
-            AdjustInput(7, tiles);
-        }
+        
 
         if (Input.GetKey(KeyCode.Space))
         {
@@ -237,78 +252,83 @@ public class Game : MonoBehaviour {
 
     public static void AdjustInput(int cat, RotateTile[] tile_list)
     {
-        foreach (RotateTile r in tile_list)
+        if (change_selection)
         {
-            SpriteRenderer tile_color = r.GetComponent<SpriteRenderer>();
-            if (r.category == cat)
+            foreach (RotateTile r in tile_list)
             {
-                r.rotatable = true;
-                if (r.type == 0)
-                {      
-                    tile_color.sprite = plus_outlined;
-                }
-                else if (r.type == 1)
+                SpriteRenderer tile_color = r.GetComponent<SpriteRenderer>();
+                if (r.category == cat)
                 {
-                    tile_color.sprite = straight_outlined;
+                    r.rotatable = true;
+                    if (r.type == 0)
+                    {
+                        tile_color.sprite = plus_outlined;
+                    }
+                    else if (r.type == 1)
+                    {
+                        tile_color.sprite = straight_outlined;
+                    }
+                    else if (r.type == 2)
+                    {
+                        tile_color.sprite = corner_outlined;
+                    }
+                    else if (r.type == 3)
+                    {
+                        tile_color.sprite = plus_outlined_n;
+                    }
+                    else if (r.type == 4)
+                    {
+                        tile_color.sprite = straight_outlined_n;
+                    }
+                    else if (r.type == 5)
+                    {
+                        tile_color.sprite = corner_outlined_n;
+                    }
+                    else if (r.type == 6)
+                    {
+                        tile_color.sprite = t_outlined_n;
+                    }
                 }
-                else if (r.type == 2)
+                else
                 {
-                    tile_color.sprite = corner_outlined;
-                }
-                else if (r.type == 3)
-                {
-                    tile_color.sprite = plus_outlined_n;
-                }
-                else if (r.type == 4)
-                {
-                    tile_color.sprite = straight_outlined_n;
-                }
-                else if (r.type == 5)
-                {
-                    tile_color.sprite = corner_outlined_n;
-                }
-                else if (r.type == 6)
-                {
-                    tile_color.sprite = t_outlined_n;
-                }
-            }
-            else
-            {
-                r.rotatable = false;
-                if (r.type == 0)
-                {
-                    tile_color.sprite = plus_;
-                    
-                }
-                else if (r.type == 1)
-                {
-                    tile_color.sprite = straight_;
-                }
-                else if (r.type == 2)
-                {
-                    tile_color.sprite = corner_;
-                }
-                else if (r.type == 3)
-                {
-                    tile_color.sprite = plus_n;
-                }
-                else if (r.type == 4)
-                {
-                    tile_color.sprite = straight_n;
-                }
-                else if (r.type == 5)
-                {
-                    tile_color.sprite = corner_n;
-                }
-                else if (r.type == 6)
-                {
-                    tile_color.sprite = t_n;
+                    r.rotatable = false;
+                    if (r.type == 0)
+                    {
+                        tile_color.sprite = plus_;
+
+                    }
+                    else if (r.type == 1)
+                    {
+                        tile_color.sprite = straight_;
+                    }
+                    else if (r.type == 2)
+                    {
+                        tile_color.sprite = corner_;
+                    }
+                    else if (r.type == 3)
+                    {
+                        tile_color.sprite = plus_n;
+                    }
+                    else if (r.type == 4)
+                    {
+                        tile_color.sprite = straight_n;
+                    }
+                    else if (r.type == 5)
+                    {
+                        tile_color.sprite = corner_n;
+                    }
+                    else if (r.type == 6)
+                    {
+                        tile_color.sprite = t_n;
+                    }
                 }
             }
         }
+        
     }
 
 
 
-    
+
+
 }

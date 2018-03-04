@@ -18,13 +18,15 @@ public class RotateTile : MonoBehaviour {
     public RotateTile[] AllTiles;
     public int queue;
     public int category;
-    public int type; 
+    public int type;
+    public Color level_color; 
 
 
 	// Use this for initialization
 	void Start ()
 	{
 	    paralyzed = false;
+	    level_color = GetComponent<SpriteRenderer>().color;
         ChangeVisuals();
         target = transform.eulerAngles.z;
         g = FindObjectOfType<Game>();
@@ -65,7 +67,10 @@ public class RotateTile : MonoBehaviour {
   
     void OnMouseDown()
     {
-        Game.AdjustInput(category, Game.tiles);
+        if (Game.change_selection)
+        {
+            Game.AdjustInput(category, Game.tiles);
+        }
     }
 
 
@@ -78,7 +83,8 @@ public class RotateTile : MonoBehaviour {
         }
         else
         {
-            sr.color = new Color(0.482f, 0.553f, 0.690f);
+            //sr.color = new Color(0.482f, 0.553f, 0.690f);
+            sr.color = level_color; 
         }
     }
    
