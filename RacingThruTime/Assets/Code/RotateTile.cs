@@ -9,6 +9,7 @@ public class RotateTile : MonoBehaviour {
     bool rotateCCW = false;
     float target = 0; 
     bool rotateCC = false;
+    public bool paralyzed;
     public bool rotatable = false; 
     float rotationSpeed = 15f;//was 15f
     Game g;
@@ -21,7 +22,10 @@ public class RotateTile : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+	    paralyzed = false;
+        ChangeVisuals();
         target = transform.eulerAngles.z;
         g = FindObjectOfType<Game>();
         characters = FindObjectsOfType<Character>();
@@ -37,6 +41,23 @@ public class RotateTile : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+	    bool temp = false;
+	    foreach (Character c in characters)
+	    {
+	        if (c.type == 3)
+	        {
+	            if (CharacterOnTile(c))
+	            {
+	                temp = true;
+                    break;
+	            }
+	        }
+	    }
+	    if (temp != paralyzed)
+	    {
+	        paralyzed = temp;
+	        ChangeVisuals();
+	    }
 	    RotationUpdate();
         
 	}
@@ -47,7 +68,19 @@ public class RotateTile : MonoBehaviour {
         Game.AdjustInput(category, Game.tiles);
     }
 
-    
+
+    void ChangeVisuals()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (paralyzed)
+        {
+            sr.color = new Color(0.306f, 0.349f, 0.439f);
+        }
+        else
+        {
+            sr.color = new Color(0.482f, 0.553f, 0.690f);
+        }
+    }
    
 
     void RotationUpdate()
@@ -82,7 +115,8 @@ public class RotateTile : MonoBehaviour {
                 {
                     if (CharacterOnTile(c))
                     {
-                        queue = 0; 
+                        queue = 0;
+
                         return; 
                     }
                 }
@@ -299,7 +333,7 @@ public class RotateTile : MonoBehaviour {
 
     public void FindNewGoal(Character p)//at some point should take a character as input
     {
-        if (OnRotatingTile(p.to) != OnRotatingTile(p.from) && p.stopped)
+        if (p.stopped && OnRotatingTile(p.to) != OnRotatingTile(p.from))
         {
             if (p.from.neighbors[p.direction] == null)
             {

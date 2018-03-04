@@ -137,24 +137,28 @@ public class Game : MonoBehaviour {
             AdjustInput(7, tiles);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
            foreach (Character c in game_chars)
-            {
-              
-                if (c.timefactor == 1)
-                {
+           {
+               if (c.timefactor == 1)
+                { 
                     c.timefactor = 2;
-                    c.MaxProgress = c.MaxProgress/2;
+                    c.MaxProgress = c.MaxProgress / 2;
                     c.progress = c.progress / 2;
-                }
-                else if (c.timefactor == 2)
+                }                
+            }
+        }
+        else
+        {
+            foreach (Character c in game_chars)
+            { 
+                if (c.timefactor == 2)
                 {
                     c.timefactor = 1;
-                    c.MaxProgress = c.MaxProgress*2;
+                    c.MaxProgress = c.MaxProgress * 2;
                     c.progress = c.progress * 2;
                 }
-                
             }
         }
 

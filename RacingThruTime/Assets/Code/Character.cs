@@ -96,7 +96,7 @@ public void Start()
 
         if (stopped == false)
         {
-            if (waiting == false)
+            if (waiting == false && progress != 0)
             {
                 //Debug.Log(transform.position);
                 //Debug.Log(to.transform.position);
