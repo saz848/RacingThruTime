@@ -117,6 +117,13 @@ public class RotateTile : MonoBehaviour {
         {
             foreach (Character c in characters)
             {
+                if (c.type == 4)
+                {
+                    if (CharacterOnTile(c))
+                    {
+                        c.frozen = !c.frozen;
+                    }
+                }
                 if (c.type == 3)
                 {
                     if (CharacterOnTile(c))
@@ -294,7 +301,7 @@ public class RotateTile : MonoBehaviour {
         }
         else if (OnRotatingTile(c.to))
         {
-            if (c.progress < c.MaxProgress/2)
+            if (c.progress <= c.MaxProgress/2)
             {
                 return true; 
             }
@@ -314,7 +321,7 @@ public class RotateTile : MonoBehaviour {
     public void MoveWithTile(Character p)
     {
         if ((p.progress <= (p.MaxProgress / 2) && p.waiting == false) && OnRotatingTile(p.to) || 
-            (p.progress > (p.MaxProgress / 2)) && OnRotatingTile(p.from))
+            (p.progress >= (p.MaxProgress / 2)) && OnRotatingTile(p.from))
         {
             // move with tile
             p.transform.parent = transform;

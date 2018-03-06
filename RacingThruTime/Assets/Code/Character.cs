@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     public bool rotating;
     public bool waiting;
     public bool starting;
+    public bool frozen;
     public int timefactor;
     public Quaternion initRotation;
     public int type;
@@ -44,6 +45,7 @@ public void Start()
         stopped = false;
         rotating = false;
         waiting = false;
+        frozen = false;
  
         all_wp = FindObjectsOfType<Waypoint>();
         from = FindClosestWaypoint(transform.position);
@@ -94,7 +96,7 @@ public void Start()
             return; 
         }
 
-        if (stopped == false)
+        if (stopped == false && frozen == false)
         {
             if (waiting == false && progress != 0)
             {

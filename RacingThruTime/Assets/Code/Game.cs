@@ -22,7 +22,7 @@ public class Game : MonoBehaviour {
     public static Sprite straight_;
     public static Sprite corner_;
     public static Sprite corner_outlined;
-    public bool player_exists;
+    public static bool player_exists;
     
 
     public static Sprite plus_outlined_n;
