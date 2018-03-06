@@ -12,7 +12,7 @@ public class Game : MonoBehaviour {
     public const int VICTORY = 1;
     public const int DEFEAT = 5;
     public Character[] game_chars;
-    Character player;
+    public static Character player;
     public static RotateTile[] tiles;
     public static Color default_color = new Color();
     public static Color highlighted_color = new Color();
@@ -22,6 +22,7 @@ public class Game : MonoBehaviour {
     public static Sprite straight_;
     public static Sprite corner_;
     public static Sprite corner_outlined;
+    public bool player_exists;
     
 
     public static Sprite plus_outlined_n;
@@ -33,24 +34,36 @@ public class Game : MonoBehaviour {
     public static Sprite t_outlined_n;
     public static Sprite t_n;
 
-    public GameObject pause_menu; 
+    public GameObject pause_menu;
+    public static GameObject restart_text;
+    public Canvas restart_canvas; 
+
+    public static bool restart_visible; 
     public bool menu_visible;
     public static bool change_selection = true; 
     RotateTile selected;
     public Canvas menu_canvas;
+
     public Button levelButton;
     public Button quitButton;
 
     // Use this for initialization
     void Start ()
     {
+        player_exists = true; 
         pause_menu = Object.Instantiate(Resources.Load("Pause Menu") as GameObject);
         menu_canvas = pause_menu.GetComponent<Canvas>();
         menu_canvas.worldCamera = Camera.main;
         change_selection = true; 
         menu_visible = false;
 
+        restart_text = Object.Instantiate(Resources.Load("Restart Text") as GameObject);
+        restart_canvas = restart_text.GetComponent<Canvas>();
+        restart_canvas.worldCamera = Camera.main;
+        restart_visible = false; 
+
         pause_menu.SetActive(menu_visible);
+        restart_text.SetActive(restart_visible);
 
         highlighted_color = new Color((248f/255f), (149f/255f), (43f/255f));
         default_color = new Color((238f/255f), (180f/255f), (119f/255f));
@@ -95,13 +108,25 @@ public class Game : MonoBehaviour {
 	void Update () {
 	    foreach (Character c in game_chars)
 	    {
-	        if (c != player)
+            
+	        if (c != player && player_exists == true)
 	        {
 	            float distance = Vector3.Distance(player.transform.position, c.transform.position);
                 if (distance < (player.radius + c.radius))
-	            {
-	                EndGame(DEFEAT);
-	            }
+                {
+                    player_exists = false;
+	                DestroyImmediate(player.gameObject);
+	                DestroyImmediate(player);
+	                game_chars = FindObjectsOfType<Character>();
+	                RotateTile[] rotate_tiles = FindObjectsOfType<RotateTile>();
+	                foreach (RotateTile rt in rotate_tiles)
+	                {
+	                    rt.characters = game_chars;
+	                }
+
+                    restart_visible = true;
+	                restart_text.SetActive(restart_visible);
+                }
             }
 	    }
 
