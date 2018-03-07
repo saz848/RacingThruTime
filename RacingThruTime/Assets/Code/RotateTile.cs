@@ -93,22 +93,25 @@ public class RotateTile : MonoBehaviour {
     {
         if (rotatable)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.X))
+            if (!g.dead)
             {
-                if (queue < 1)
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.X))
                 {
-                    queue = queue + 1;
-                }
-                
-            }
+                    if (queue < 1)
+                    {
+                        queue = queue + 1;
+                    }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Z))
-            {
-                if (queue > -1)
-                {
-                    queue = queue - 1;
                 }
 
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Z))
+                {
+                    if (queue > -1)
+                    {
+                        queue = queue - 1;
+                    }
+
+                }
             }
         }
 
@@ -117,13 +120,6 @@ public class RotateTile : MonoBehaviour {
         {
             foreach (Character c in characters)
             {
-                if (c.type == 4)
-                {
-                    if (CharacterOnTile(c))
-                    {
-                        c.frozen = !c.frozen;
-                    }
-                }
                 if (c.type == 3)
                 {
                     if (CharacterOnTile(c))
@@ -137,19 +133,33 @@ public class RotateTile : MonoBehaviour {
 
             foreach (Character c in characters)
             {
-                c.rotating = false;
-                foreach (Waypoint w in c.to.neighbors)
+                if (c.type == 4)
                 {
-                    if (w != null && OnRotatingTile(w))
+                    if (CharacterOnTile(c))
+                    {
+                        c.frozen = !c.frozen;
+                    }
+                }
+            }
+
+            foreach (Character c in characters)
+            {
+                c.rotating = false;
+                if (c.to != null)
+                {
+                    foreach (Waypoint w in c.to.neighbors)
+                    {
+                        if (w != null && OnRotatingTile(w))
+                        {
+                            c.rotating = true;
+                            //c.initRotation = c.transform.rotation;
+                        }
+                    }
+                    if (OnRotatingTile(c.to) && (c.progress < c.MaxProgress / 2))
                     {
                         c.rotating = true;
                         //c.initRotation = c.transform.rotation;
                     }
-                }
-                if (OnRotatingTile(c.to) && (c.progress < c.MaxProgress / 2))
-                {
-                    c.rotating = true;
-                    //c.initRotation = c.transform.rotation;
                 }
 
             }
@@ -290,11 +300,19 @@ public class RotateTile : MonoBehaviour {
   
     public bool OnRotatingTile(Waypoint w)//wont work if multiple tiles rotate at once
     {
+        if (w == null)
+        {
+            return false;
+        }
         return (w.transform.parent == transform);
     }
     
     public bool CharacterOnTile(Character c)
     {
+        if (c.to == null)
+        {
+            return OnRotatingTile(c.from);
+        }
         if (OnRotatingTile(c.to) && OnRotatingTile(c.from))
         {
             return true; 
@@ -335,7 +353,8 @@ public class RotateTile : MonoBehaviour {
             }
         }
 
-        if (p.progress > (p.MaxProgress / 2) && (OnRotatingTile(p.to) ^ OnRotatingTile(p.from))) 
+        if ((p.progress > (p.MaxProgress / 2) && (OnRotatingTile(p.to) && !OnRotatingTile(p.from))) ||
+        (p.progress >= (p.MaxProgress / 2) && (!OnRotatingTile(p.to) && OnRotatingTile(p.from))))
         {
             // p.progress = p.MaxProgress - p.progress;
             //p.to = p.from;

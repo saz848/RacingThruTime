@@ -34,8 +34,13 @@ public class DeathTile : MonoBehaviour
                 }
                 DestroyImmediate(c.gameObject);
                 DestroyImmediate(c);
+	            Game this_game = FindObjectOfType<Game>();
+                if (c.type == 0)
+	            {
+	                this_game.dead = true; 
+	            }
                 all_chars = FindObjectsOfType<Character>();
-                Game this_game = FindObjectOfType<Game>();
+                
                 RotateTile[] rotate_tiles = FindObjectsOfType<RotateTile>();
                 this_game.game_chars = all_chars;
                 foreach (RotateTile rt in rotate_tiles)

@@ -36,9 +36,11 @@ public class Game : MonoBehaviour {
 
     public GameObject pause_menu;
     public static GameObject restart_text;
-    public Canvas restart_canvas; 
+    public Canvas restart_canvas;
+    public Button restart_button;
+    public GameObject button_object; 
 
-    public static bool restart_visible; 
+    public static bool restart_visible;
     public bool menu_visible;
     public static bool change_selection = true; 
     RotateTile selected;
@@ -47,9 +49,12 @@ public class Game : MonoBehaviour {
     public Button levelButton;
     public Button quitButton;
 
+    public bool dead; 
+
     // Use this for initialization
     void Start ()
     {
+        dead = false; 
         player_exists = true; 
         pause_menu = Object.Instantiate(Resources.Load("Pause Menu") as GameObject);
         menu_canvas = pause_menu.GetComponent<Canvas>();
@@ -59,8 +64,12 @@ public class Game : MonoBehaviour {
 
         restart_text = Object.Instantiate(Resources.Load("Restart Text") as GameObject);
         restart_canvas = restart_text.GetComponent<Canvas>();
+        button_object = GameObject.FindGameObjectWithTag("Restart");
+        restart_button = button_object.GetComponent<Button>(); 
+        restart_button.onClick.AddListener(RestartGame);
         restart_canvas.worldCamera = Camera.main;
         restart_visible = false; 
+
 
         pause_menu.SetActive(menu_visible);
         restart_text.SetActive(restart_visible);
@@ -117,6 +126,7 @@ public class Game : MonoBehaviour {
                     player_exists = false;
 	                DestroyImmediate(player.gameObject);
 	                DestroyImmediate(player);
+                    dead = true; 
 	                game_chars = FindObjectsOfType<Character>();
 	                RotateTile[] rotate_tiles = FindObjectsOfType<RotateTile>();
 	                foreach (RotateTile rt in rotate_tiles)
@@ -159,23 +169,6 @@ public class Game : MonoBehaviour {
 	    }
 
 
-	    if (change_selection)
-	    {
-	        if (Input.GetKeyDown(KeyCode.UpArrow))
-	        {
-	            control = (control - 1 + tiles.Length) % tiles.Length;
-	            AdjustInput(control, tiles);
-	        }
-
-	        else if (Input.GetKeyDown(KeyCode.DownArrow))
-	        {
-	            control = (control + 1) % tiles.Length;
-	            AdjustInput(control, tiles);
-	        }
-        }
-        
-
-        
 
         if (Input.GetKey(KeyCode.Space))
         {
@@ -273,6 +266,11 @@ public class Game : MonoBehaviour {
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+    }
+
+    public void RestartGame()
+    {
+        EndGame(DEFEAT);
     }
 
     public static void AdjustInput(int cat, RotateTile[] tile_list)
