@@ -145,10 +145,13 @@ MonoBehaviour:
   game_chars: []
   pause_menu: {fileID: 0}
   restart_canvas: {fileID: 0}
+  restart_button: {fileID: 0}
+  button_object: {fileID: 0}
   menu_visible: 0
   menu_canvas: {fileID: 0}
   levelButton: {fileID: 0}
   quitButton: {fileID: 0}
+  dead: 0
 --- !u!4 &51463245
 Transform:
   m_ObjectHideFlags: 0
