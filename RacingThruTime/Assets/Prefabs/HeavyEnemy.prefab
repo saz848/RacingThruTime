@@ -66,6 +66,8 @@ MonoBehaviour:
   rotating: 0
   waiting: 0
   starting: 0
+  frozen: 0
+  paused: 0
   timefactor: 0
   initRotation: {x: 0, y: 0, z: 0, w: 0}
   type: 3
@@ -78,6 +80,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -93,6 +96,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -102,7 +106,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: f91cfb10a154627429bd64e09de9e5e9, type: 3}
-  m_Color: {r: 0.25334087, g: 0.15614188, b: 0.5588235, a: 1}
+  m_Color: {r: 0.8068771, g: 0.30882353, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

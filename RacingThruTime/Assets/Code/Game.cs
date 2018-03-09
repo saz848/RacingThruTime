@@ -95,6 +95,7 @@ public class Game : MonoBehaviour {
         t_n = Resources.Load<Sprite>("NarrowTiles/TNarrow");
         t_outlined_n = Resources.Load<Sprite>("NarrowTiles/TNarrowOutlined");
 
+        Camera.main.GetComponent<Camera>().backgroundColor = new Color((49f / 255f), (77f / 255f), (121f / 255f)); 
 
         control = 0;
         AdjustInput(control, tiles);
@@ -126,8 +127,9 @@ public class Game : MonoBehaviour {
                     player_exists = false;
 	                DestroyImmediate(player.gameObject);
 	                DestroyImmediate(player);
-                    dead = true; 
-	                game_chars = FindObjectsOfType<Character>();
+                    dead = true;
+                    Camera.main.GetComponent<Camera>().backgroundColor = new Color(0, 0, 0);
+                    game_chars = FindObjectsOfType<Character>();
 	                RotateTile[] rotate_tiles = FindObjectsOfType<RotateTile>();
 	                foreach (RotateTile rt in rotate_tiles)
 	                {
@@ -161,7 +163,7 @@ public class Game : MonoBehaviour {
 	        change_selection = !menu_visible;
             foreach (Character c in game_chars)
 	        {
-	            c.stopped = menu_visible; 
+	            c.paused = menu_visible; 
 	        }
 	        
 	        

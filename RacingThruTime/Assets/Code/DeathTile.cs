@@ -37,7 +37,8 @@ public class DeathTile : MonoBehaviour
 	            Game this_game = FindObjectOfType<Game>();
                 if (c.type == 0)
 	            {
-	                this_game.dead = true; 
+	                Camera.main.GetComponent<Camera>().backgroundColor = new Color(0, 0, 0);
+                    this_game.dead = true; 
 	            }
                 all_chars = FindObjectsOfType<Character>();
                 

@@ -22,6 +22,7 @@ public class Character : MonoBehaviour
     public bool waiting;
     public bool starting;
     public bool frozen;
+    public bool paused; 
     public int timefactor;
     public Quaternion initRotation;
     public int type;
@@ -96,7 +97,7 @@ public void Start()
             return; 
         }
 
-        if (stopped == false && frozen == false)
+        if (stopped == false && frozen == false && paused == false)
         {
             if (waiting == false && progress != 0)
             {
