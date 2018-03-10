@@ -32,6 +32,8 @@ public class Character : MonoBehaviour
 
     public static Sprite player; 
     public static SpriteRenderer my_sprite;
+    public Color frozen_crab;
+    public Color original_color; 
 
     public static Sprite down;
     public static Sprite right;
@@ -64,8 +66,11 @@ public void Start()
         up = Resources.Load<Sprite>("CharacterSprites/Up");
 
         my_sprite = GetComponent<SpriteRenderer>();
-        //my_sprite.sprite = down;
-    }
+        frozen_crab = new Color((238f/255f), (132f/255f), (47f/255f));
+        original_color = my_sprite.color;
+
+    //my_sprite.sprite = down;
+}
 
     // Update is called once per frame
     public void Update()
@@ -259,6 +264,15 @@ public void Start()
         }
         
         
+    }
+
+    public void updateCrabColor()
+    {
+        if (frozen)
+        {
+            my_sprite.color = frozen_crab;
+        }
+        else my_sprite.color = original_color; 
     }
 
     // direction helper functions

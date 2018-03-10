@@ -138,6 +138,7 @@ public class RotateTile : MonoBehaviour {
                     if (CharacterOnTile(c))
                     {
                         c.frozen = !c.frozen;
+                        c.updateCrabColor();
                     }
                 }
             }
