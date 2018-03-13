@@ -39,6 +39,7 @@ public class DeathTile : MonoBehaviour
 	            {
 	                Camera.main.GetComponent<Camera>().backgroundColor = new Color(0, 0, 0);
                     this_game.dead = true; 
+
 	            }
                 all_chars = FindObjectsOfType<Character>();
                 
@@ -46,6 +47,11 @@ public class DeathTile : MonoBehaviour
                 this_game.game_chars = all_chars;
                 foreach (RotateTile rt in rotate_tiles)
                 {
+                    if (this_game.dead == true)
+                    {
+                        SpriteRenderer sr = rt.GetComponent<SpriteRenderer>();
+                        sr.color = new Color((128f / 255f), (128f / 255f), (128f / 255f));
+                    }
                     rt.characters = all_chars;
                 }
             }

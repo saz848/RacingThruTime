@@ -163,17 +163,17 @@ Prefab:
     - target: {fileID: 212605391142589684, guid: ffa879c6bd8c76443818ecdec650e262,
         type: 2}
       propertyPath: m_Color.r
-      value: 0.75686276
+      value: 0.69411767
       objectReference: {fileID: 0}
     - target: {fileID: 212605391142589684, guid: ffa879c6bd8c76443818ecdec650e262,
         type: 2}
       propertyPath: m_Color.g
-      value: 0.7372549
+      value: 0.69411767
       objectReference: {fileID: 0}
     - target: {fileID: 212605391142589684, guid: ffa879c6bd8c76443818ecdec650e262,
         type: 2}
       propertyPath: m_Color.b
-      value: 0.85882354
+      value: 0.69411767
       objectReference: {fileID: 0}
     - target: {fileID: 4170147212967870, guid: ffa879c6bd8c76443818ecdec650e262, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -235,7 +235,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &154006152
 Prefab:

@@ -93,7 +93,7 @@ public class RotateTile : MonoBehaviour {
     {
         if (rotatable)
         {
-            if (!g.dead)
+            if (true)
             {
                 if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.X))
                 {
@@ -133,13 +133,10 @@ public class RotateTile : MonoBehaviour {
 
             foreach (Character c in characters)
             {
-                if (c.type == 4)
-                {
-                    if (CharacterOnTile(c))
-                    {
-                        c.frozen = !c.frozen;
-                        c.updateCrabColor();
-                    }
+                if (c.type == 4 && CharacterOnTile(c))
+                { 
+                    c.frozen = !c.frozen;
+                    c.updateCrabColor();
                 }
             }
 

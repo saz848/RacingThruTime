@@ -128,12 +128,15 @@ public class Game : MonoBehaviour {
 	                DestroyImmediate(player.gameObject);
 	                DestroyImmediate(player);
                     dead = true;
-                    Camera.main.GetComponent<Camera>().backgroundColor = new Color(0, 0, 0);
+                    Camera.main.GetComponent<Camera>().backgroundColor = new Color((38f/255f), (38f / 255f), (38f / 255f));
+
                     game_chars = FindObjectsOfType<Character>();
 	                RotateTile[] rotate_tiles = FindObjectsOfType<RotateTile>();
 	                foreach (RotateTile rt in rotate_tiles)
 	                {
-	                    rt.characters = game_chars;
+	                    SpriteRenderer sr = rt.GetComponent<SpriteRenderer>();
+                        sr.color = new Color((128f / 255f), (128f / 255f), (128f / 255f));
+                        rt.characters = game_chars;
 	                }
 
                     restart_visible = true;

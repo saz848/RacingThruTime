@@ -38,12 +38,14 @@ public class Character : MonoBehaviour
     public static Sprite down;
     public static Sprite right;
     public static Sprite up;
-    public static Sprite left; 
+    public static Sprite left;
+
+    public float curr_time; 
 
 // Use this for initialization
 public void Start()
 {
-        MaxProgress = 30;
+        MaxProgress = 20;
         progress = MaxProgress;
         stopped = false;
         rotating = false;
@@ -59,21 +61,35 @@ public void Start()
         radius = 0.1f;
         timefactor = 1;
 
-
         down = Resources.Load<Sprite>("CharacterSprites/Down");
         left = Resources.Load<Sprite>("CharacterSprites/Left");
         right = Resources.Load<Sprite>("CharacterSprites/Right");
         up = Resources.Load<Sprite>("CharacterSprites/Up");
 
         my_sprite = GetComponent<SpriteRenderer>();
-        frozen_crab = new Color((238f/255f), (132f/255f), (47f/255f));
-        original_color = my_sprite.color;
+        if (type == 0)
+        {
+            original_color = new Color((23f / 255f), (152f / 255f), (15f / 255f));
+        }
+        else if (type == 1)
+        {
+            original_color = new Color((9f / 255f), (39f / 255f), (128f / 255f));
+        }
+        else if (type == 3)
+        {
+            original_color = new Color((206f / 255f), (79f / 255f), (255f / 255f));
+        }
+        else if (type == 4)
+        {
+            original_color = new Color((238f / 255f), (0f / 255f), (0f / 255f));
+        }
+        my_sprite.color = original_color;
 
-    //my_sprite.sprite = down;
-}
+        //my_sprite.sprite = down;
+    }
 
     // Update is called once per frame
-    public void Update()
+    public void FixedUpdate()
     {
 
         if (starting)
@@ -106,9 +122,7 @@ public void Start()
         {
             if (waiting == false && progress != 0)
             {
-                //Debug.Log(transform.position);
-                //Debug.Log(to.transform.position);
-                transform.position += (to.transform.position - transform.position) / progress;
+                transform.position += (to.transform.position - transform.position) / (progress);
                 progress = progress - 1;
             }
 
@@ -268,11 +282,15 @@ public void Start()
 
     public void updateCrabColor()
     {
-        if (frozen)
+        if (type == 4)
         {
-            my_sprite.color = frozen_crab;
+            SpriteRenderer this_sprite = GetComponent<SpriteRenderer>();
+            if (frozen)
+            {
+                this_sprite.color = new Color((238f / 255f), (129f / 255f), (7f / 255f));                
+            }
+            else this_sprite.color = original_color;
         }
-        else my_sprite.color = original_color; 
     }
 
     // direction helper functions
